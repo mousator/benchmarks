@@ -58,7 +58,15 @@ public class ResourceUsage {
 	}
 	
 	public String toAverageString() {
-		return String.format("Average: %.2f KB of memory, took %.2f seconds", totalMemory/totalIterations/1024.0, totalTime/totalIterations/1000.0);
+		return String.format("Average: %.2f KB of memory, took %.2f seconds", getAverageMemory()/1024.0, getAverageTime()/1000.0);
+	}
+	
+	public long getAverageMemory(){
+		return totalMemory/totalIterations;
+	}
+	
+	public long getAverageTime(){
+		return totalTime/totalIterations;
 	}
 
 	public long getStartTotalMemory() {

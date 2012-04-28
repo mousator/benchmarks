@@ -33,6 +33,8 @@ public class AutoboxingTypeBenchmark {
 		}
 		System.out.println("primitive Type: " + resourceUsagePrimType.toAverageString());
 		System.out.println("wrapper Type: " + resourceUsageWrapper.toAverageString());
+		System.out.println("memory wrapper overhead: " + resourceUsageWrapper.getAverageMemory() / resourceUsagePrimType.getAverageMemory());
+		System.out.println("consumed time wrapper overhead: " + resourceUsageWrapper.getAverageTime() / resourceUsagePrimType.getAverageTime());
 		resourceUsagePrimType.reset();
 		resourceUsageWrapper.reset();
 		
@@ -50,6 +52,8 @@ public class AutoboxingTypeBenchmark {
 		}
 		System.out.println("primitive Type: " + resourceUsagePrimType.toAverageString());
 		System.out.println("wrapper Type: " + resourceUsageWrapper.toAverageString());
+		System.out.println("memory wrapper overhead: " + resourceUsageWrapper.getAverageMemory() / resourceUsagePrimType.getAverageMemory());
+		System.out.println("consumed time wrapper overhead: " + resourceUsageWrapper.getAverageTime() / resourceUsagePrimType.getAverageTime());
 		resourceUsagePrimType.reset();
 		resourceUsageWrapper.reset();
 		

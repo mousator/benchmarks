@@ -22,7 +22,10 @@ public class ResourceUsage {
 	private long totalMemory=0L;
 	private long totalIterations=0L;
 	
-	public void start(){
+	private int nrUnits;
+	
+	public void start(int nrUnits){
+		this.nrUnits=nrUnits;
 		runtime.gc();
 		startTotalMemory = runtime.totalMemory();
 		startFreeMemory = runtime.freeMemory();
@@ -54,11 +57,11 @@ public class ResourceUsage {
 	
 	@Override
 	public String toString() {
-		return String.format("%.2f KB of memory, took %.2f seconds", getUsedMemory()/1024.0, getUsedTime()/1000.0);
+		return String.format("%.2f KB of memory, took %.2f seconds (memory size per unit: %d)", getUsedMemory()/1024.0, getUsedTime()/1000.0, getUsedMemory()/nrUnits);
 	}
 	
 	public String toAverageString() {
-		return String.format("Average: %.2f KB of memory, took %.2f seconds", getAverageMemory()/1024.0, getAverageTime()/1000.0);
+		return String.format("Average: %.2f KB of memory, took %.2f seconds (memory size per unit: %d)", getAverageMemory()/1024.0, getAverageTime()/1000.0, getAverageMemory()/nrUnits);
 	}
 	
 	public long getAverageMemory(){

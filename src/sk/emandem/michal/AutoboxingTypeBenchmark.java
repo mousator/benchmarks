@@ -21,12 +21,12 @@ public class AutoboxingTypeBenchmark {
 
 		System.out.println("##Measuring integers##");
 		for(int expNumber=0; expNumber < 5; expNumber++ ){
-			resourceUsagePrimType.start();
+			resourceUsagePrimType.start(iterations);
 			measureInt(iterations, true);
 			resourceUsagePrimType.stop();
 			System.out.println("Diff memory: " + resourceUsagePrimType.toString());
 			
-			resourceUsageWrapper.start();
+			resourceUsageWrapper.start(iterations);
 			measureInt(iterations, false);
 			resourceUsageWrapper.stop();
 			System.out.println("Diff memory: " + resourceUsageWrapper.toString());
@@ -40,12 +40,12 @@ public class AutoboxingTypeBenchmark {
 		
 		System.out.println("##Measuring long numbers##");
 		for(int expNumber=0; expNumber < 5; expNumber++ ){
-			resourceUsagePrimType.start();
+			resourceUsagePrimType.start(iterations);
 			measureLong(iterations, true);
 			resourceUsagePrimType.stop();
 			System.out.println("Diff memory: " + resourceUsagePrimType.toString());
 			
-			resourceUsageWrapper.start();
+			resourceUsageWrapper.start(iterations);
 			measureLong(iterations, false);
 			resourceUsageWrapper.stop();
 			System.out.println("Diff memory: " + resourceUsageWrapper.toString());
@@ -56,16 +56,34 @@ public class AutoboxingTypeBenchmark {
 		System.out.println("consumed time wrapper overhead: " + resourceUsageWrapper.getAverageTime() / resourceUsagePrimType.getAverageTime());
 		resourceUsagePrimType.reset();
 		resourceUsageWrapper.reset();
-		
+
 		System.out.println("##Measuring empty class instantiating ##");
 		for(int expNumber=0; expNumber < 5; expNumber++ ){
-			resourceUsagePrimType.start();
-			measureEmptyClass(iterations);
+			resourceUsagePrimType.start(iterations);
+			measureEmptyClass(iterations, false);
+			resourceUsagePrimType.stop();
+			System.out.println("Empty class Diff memory: " + resourceUsagePrimType.toString());
+			
+			resourceUsageWrapper.start(iterations);
+			measureEmptyClass(iterations, true);
+			resourceUsageWrapper.stop();
+			System.out.println("Empty object Diff memory: " + resourceUsageWrapper.toString());
+		}
+		System.out.println("Empty class: " + resourceUsagePrimType.toAverageString());
+		System.out.println("Empty object: " + resourceUsageWrapper.toAverageString());
+		resourceUsagePrimType.reset();
+		resourceUsageWrapper.reset();
+		
+		System.out.println("##Measuring emulated long class instantiating ##");
+		for(int expNumber=0; expNumber < 5; expNumber++ ){
+			resourceUsagePrimType.start(iterations);
+			measureEmulatedLongClass(iterations);
 			resourceUsagePrimType.stop();
 			System.out.println("Diff memory: " + resourceUsagePrimType.toString());
 		}
-		System.out.println("empty class: " + resourceUsagePrimType.toAverageString());
+		System.out.println("Emulated long class: " + resourceUsagePrimType.toAverageString());
 		resourceUsagePrimType.reset();
+		
 
 //		measureWrapperInt(iterations, true);
 		// System.out.println(measureWrapperInt(iterations, false));
@@ -130,19 +148,49 @@ public class AutoboxingTypeBenchmark {
 		}
 	}
 	
-	private static void measureEmptyClass(int iterations) {
-		System.out.println("Measuring array of size " + iterations + " of empty class");
-		EmptyClass emptyClassInstance = null;
-		EmptyClass[] arr = new EmptyClass[iterations];
+	private static void measureEmulatedLongClass(int iterations) {
+		System.out.println("Measuring array of size " + iterations + " of emulated long class");
+		EmulatedLongClass emulatedLongClassInstance = null;
+		EmulatedLongClass[] arr = new EmulatedLongClass[iterations];
 		for (int i = 0; i < iterations; i++) {
 			// objectInt=Integer.valueOf(10*i);
-			emptyClassInstance = new EmptyClass();
-			arr[i] = emptyClassInstance;
+			emulatedLongClassInstance = new EmulatedLongClass(i);
+			arr[i] = emulatedLongClassInstance;
 		}
-		emptyClassInstance = arr[0];
+		emulatedLongClassInstance = arr[0];
+	}
+	
+	private static void measureEmptyClass(int iterations, boolean asObject) {
+		System.out.println("Measuring array of size " + iterations + " of empty class, using plain object " + asObject);
+		if(asObject){
+			Object emptyClassInstance = null;
+			Object[] arr = new Object[iterations];
+			for (int i = 0; i < iterations; i++) {
+				// objectInt=Integer.valueOf(10*i);
+				emptyClassInstance = new Object();
+				arr[i] = emptyClassInstance;
+			}
+			emptyClassInstance = arr[0];
+		} else {
+			EmptyClass emptyClassInstance = null;
+			EmptyClass[] arr = new EmptyClass[iterations];
+			for (int i = 0; i < iterations; i++) {
+				// objectInt=Integer.valueOf(10*i);
+				emptyClassInstance = new EmptyClass();
+				arr[i] = emptyClassInstance;
+			}
+			emptyClassInstance = arr[0];
+		}
 	}
 	
 	public static class EmptyClass{
+	}
+	
+	public static class EmulatedLongClass{
+		public long value;
+		public EmulatedLongClass(long l) {
+			value=l;
+		}
 	}
 
 	@SuppressWarnings("unused")

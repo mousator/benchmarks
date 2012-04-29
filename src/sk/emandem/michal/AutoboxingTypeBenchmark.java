@@ -3,6 +3,7 @@
  */
 package sk.emandem.michal;
 
+
 import java.util.Date;
 
 /**
@@ -15,21 +16,28 @@ public class AutoboxingTypeBenchmark {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		int iterations = 10000000;
-		ResourceUsage resourceUsagePrimType= new ResourceUsage();
-		ResourceUsage resourceUsageWrapper= new ResourceUsage();
+		
+//		long memory = MemoryMeasurer.measureBytes(new EmptyClass());
+//		System.out.println(memory);
+		
+		
+//		int iterations = 10000000;
+		int iterations = 1000000;
+		int repetition = 3;
+		boolean preciseMemoryMethod = false;
+		
+		ResourceUsage resourceUsagePrimType= new ResourceUsage(preciseMemoryMethod);
+		ResourceUsage resourceUsageWrapper= new ResourceUsage(preciseMemoryMethod);
 
 		System.out.println("##Measuring integers##");
-		for(int expNumber=0; expNumber < 5; expNumber++ ){
+		for(int expNumber=0; expNumber < repetition; expNumber++ ){
 			resourceUsagePrimType.start(iterations);
-			measureInt(iterations, true);
-			resourceUsagePrimType.stop();
-			System.out.println("Diff memory: " + resourceUsagePrimType.toString());
+			Object o = measureInt(iterations, true);
+			resourceUsagePrimType.stop(o);
 			
 			resourceUsageWrapper.start(iterations);
-			measureInt(iterations, false);
-			resourceUsageWrapper.stop();
-			System.out.println("Diff memory: " + resourceUsageWrapper.toString());
+			o = measureInt(iterations, false);
+			resourceUsageWrapper.stop(o);
 		}
 		System.out.println("primitive Type: " + resourceUsagePrimType.toAverageString());
 		System.out.println("wrapper Type: " + resourceUsageWrapper.toAverageString());
@@ -39,16 +47,14 @@ public class AutoboxingTypeBenchmark {
 		resourceUsageWrapper.reset();
 		
 		System.out.println("##Measuring long numbers##");
-		for(int expNumber=0; expNumber < 5; expNumber++ ){
+		for(int expNumber=0; expNumber < repetition; expNumber++ ){
 			resourceUsagePrimType.start(iterations);
-			measureLong(iterations, true);
-			resourceUsagePrimType.stop();
-			System.out.println("Diff memory: " + resourceUsagePrimType.toString());
+			Object o = measureLong(iterations, true);
+			resourceUsagePrimType.stop(o);
 			
 			resourceUsageWrapper.start(iterations);
-			measureLong(iterations, false);
-			resourceUsageWrapper.stop();
-			System.out.println("Diff memory: " + resourceUsageWrapper.toString());
+			o = measureLong(iterations, false);
+			resourceUsageWrapper.stop(o);
 		}
 		System.out.println("primitive Type: " + resourceUsagePrimType.toAverageString());
 		System.out.println("wrapper Type: " + resourceUsageWrapper.toAverageString());
@@ -58,16 +64,14 @@ public class AutoboxingTypeBenchmark {
 		resourceUsageWrapper.reset();
 
 		System.out.println("##Measuring empty class instantiating ##");
-		for(int expNumber=0; expNumber < 5; expNumber++ ){
+		for(int expNumber=0; expNumber < repetition; expNumber++ ){
 			resourceUsagePrimType.start(iterations);
-			measureEmptyClass(iterations, false);
-			resourceUsagePrimType.stop();
-			System.out.println("Empty class Diff memory: " + resourceUsagePrimType.toString());
+			Object o = measureEmptyClass(iterations, false);
+			resourceUsagePrimType.stop(o);
 			
 			resourceUsageWrapper.start(iterations);
-			measureEmptyClass(iterations, true);
-			resourceUsageWrapper.stop();
-			System.out.println("Empty object Diff memory: " + resourceUsageWrapper.toString());
+			o = measureEmptyClass(iterations, true);
+			resourceUsageWrapper.stop(o);
 		}
 		System.out.println("Empty class: " + resourceUsagePrimType.toAverageString());
 		System.out.println("Empty object: " + resourceUsageWrapper.toAverageString());
@@ -75,11 +79,10 @@ public class AutoboxingTypeBenchmark {
 		resourceUsageWrapper.reset();
 		
 		System.out.println("##Measuring emulated long class instantiating ##");
-		for(int expNumber=0; expNumber < 5; expNumber++ ){
+		for(int expNumber=0; expNumber < repetition; expNumber++ ){
 			resourceUsagePrimType.start(iterations);
-			measureEmulatedLongClass(iterations);
-			resourceUsagePrimType.stop();
-			System.out.println("Diff memory: " + resourceUsagePrimType.toString());
+			Object o = measureEmulatedLongClass(iterations);
+			resourceUsagePrimType.stop(o);
 		}
 		System.out.println("Emulated long class: " + resourceUsagePrimType.toAverageString());
 		resourceUsagePrimType.reset();
@@ -100,7 +103,7 @@ public class AutoboxingTypeBenchmark {
 
 	}
 
-	private static void measureInt(int iterations, boolean primitiveType) {
+	private static Object measureInt(int iterations, boolean primitiveType) {
 		System.out.println("Measuring array of size " + iterations + " of integers type " + (primitiveType?"primitive":"wrapped"));
 		int primitiveInt = 0;
 		Integer objectInt = 0;
@@ -112,6 +115,7 @@ public class AutoboxingTypeBenchmark {
 				arr[i] = primitiveInt;
 			}
 			primitiveInt = arr[0];
+			return arr;
 		} else {
 			Integer[] arr = new Integer[iterations];
 			for (int i = 0; i < iterations; i++) {
@@ -121,10 +125,11 @@ public class AutoboxingTypeBenchmark {
 				arr[i] = objectInt;
 			}
 			objectInt = arr[0];
+			return arr;
 		}
 	}
 	
-	private static void measureLong(int iterations, boolean primitiveType) {
+	private static Object measureLong(int iterations, boolean primitiveType) {
 		System.out.println("Measuring array of size " + iterations + " of long numbers type " + (primitiveType?"primitive":"wrapped"));
 		long primitiveLong = 0L;
 		Long objectLong = 0L;
@@ -136,6 +141,7 @@ public class AutoboxingTypeBenchmark {
 				arr[i] = primitiveLong;
 			}
 			primitiveLong = arr[0];
+			return arr;
 		} else {
 			Long[] arr = new Long[iterations];
 			for (long i = 0; i < iterations; i++) {
@@ -145,10 +151,11 @@ public class AutoboxingTypeBenchmark {
 				arr[(int)i] = objectLong;
 			}
 			objectLong = arr[0];
+			return arr;
 		}
 	}
 	
-	private static void measureEmulatedLongClass(int iterations) {
+	private static Object measureEmulatedLongClass(int iterations) {
 		System.out.println("Measuring array of size " + iterations + " of emulated long class");
 		EmulatedLongClass emulatedLongClassInstance = null;
 		EmulatedLongClass[] arr = new EmulatedLongClass[iterations];
@@ -158,9 +165,10 @@ public class AutoboxingTypeBenchmark {
 			arr[i] = emulatedLongClassInstance;
 		}
 		emulatedLongClassInstance = arr[0];
+		return arr;
 	}
 	
-	private static void measureEmptyClass(int iterations, boolean asObject) {
+	private static Object measureEmptyClass(int iterations, boolean asObject) {
 		System.out.println("Measuring array of size " + iterations + " of empty class, using plain object " + asObject);
 		if(asObject){
 			Object emptyClassInstance = null;
@@ -171,6 +179,7 @@ public class AutoboxingTypeBenchmark {
 				arr[i] = emptyClassInstance;
 			}
 			emptyClassInstance = arr[0];
+			return arr;
 		} else {
 			EmptyClass emptyClassInstance = null;
 			EmptyClass[] arr = new EmptyClass[iterations];
@@ -180,6 +189,7 @@ public class AutoboxingTypeBenchmark {
 				arr[i] = emptyClassInstance;
 			}
 			emptyClassInstance = arr[0];
+			return arr;
 		}
 	}
 	

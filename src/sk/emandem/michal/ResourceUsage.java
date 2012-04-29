@@ -3,6 +3,8 @@
  */
 package sk.emandem.michal;
 
+import objectexplorer.MemoryMeasurer;
+
 /**
  * @author misiak
  *
@@ -22,23 +24,39 @@ public class ResourceUsage {
 	private long totalMemory=0L;
 	private long totalIterations=0L;
 	
+	private long measurerMemorySize = 0L;
+	
 	private int nrUnits;
+	
+	private boolean preciseMeasureMethod;
+	
+	public ResourceUsage(boolean preciseMeasureMethod) {
+		this.preciseMeasureMethod = preciseMeasureMethod;
+	}
 	
 	public void start(int nrUnits){
 		this.nrUnits=nrUnits;
-		runtime.gc();
-		startTotalMemory = runtime.totalMemory();
-		startFreeMemory = runtime.freeMemory();
 		startTime = System.currentTimeMillis();
+		if(!preciseMeasureMethod){
+			runtime.gc();
+			startTotalMemory = runtime.totalMemory();
+			startFreeMemory = runtime.freeMemory();
+		}
 	}
 	
-	public void stop(){
-		stopTotalMemory = runtime.totalMemory();
-		stopFreeMemory = runtime.freeMemory();
+	public void stop(Object o){
 		stopTime = System.currentTimeMillis();
 		totalIterations++;
+		if(!preciseMeasureMethod){
+			stopTotalMemory = runtime.totalMemory();
+			stopFreeMemory = runtime.freeMemory();
+			measurerMemorySize = (stopTotalMemory-stopFreeMemory) - (startTotalMemory-startFreeMemory);
+		} else {
+			measurerMemorySize = MemoryMeasurer.measureBytes(o);
+		}
 		totalMemory+=getUsedMemory();
 		totalTime+=stopTime-startTime;
+		System.out.println("Diff memory: " + toString());
 	}
 	
 	public void reset(){
@@ -48,7 +66,7 @@ public class ResourceUsage {
 	}
 	
 	public long getUsedMemory(){
-		return (stopTotalMemory-stopFreeMemory) - (startTotalMemory-startFreeMemory);
+		return measurerMemorySize;
 	}
 	
 	public long getUsedTime(){
@@ -69,7 +87,7 @@ public class ResourceUsage {
 	}
 	
 	public long getAverageTime(){
-		return totalTime/totalIterations;
+		return totalTime/totalIterations + 1; //to avoid div by 0
 	}
 
 	public long getStartTotalMemory() {

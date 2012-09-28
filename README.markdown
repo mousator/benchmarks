@@ -5,20 +5,16 @@ I measured three times the creation of one million of *int*, *long*,
 
 From the quick benchmark I found out:
 
-- measuring integers
+1. measuring integers
  * wrapper class needs 4.5 (20/4) times more memory than int 
  * the time overhead is about 12 times
- 
-
-- measuring long 
+1. measuring long 
  * wrapper class took 3.5 (28/8) more memory than long
  * the time overhead was comparable to int overhead, about 12 times 
  * Long wrapper is comparable to creating custom class with long primitive field (quite obvious from the definition)
-
-- measuring empty class vs empty object
+1. measuring empty class vs empty object
  * not significant difference
-
-- measuring methods
+1. measuring methods
  * using Runtime class to get used memory is not precise enough
  * to get precise output I used object explorer library (http://code.google.com/p/memory-measurer/)
  * I used MacBookAir 1.7Ghz CPU, JDK1.6.0_31 64bit by [Michal Antolik]

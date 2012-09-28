@@ -10,9 +10,9 @@ From the quick benchmark I found out:
 	the time overhead is about 12 times
 
 - measuring long 
- 1. wrapper class took 3.5 (28/8) more memory than long
- 2. the time overhead was comparable to int overhead, about 12 times 
- 3. Long wrapper is comparable to creating custom class with long primitive field (quite obvious from the definition)
+ * wrapper class took 3.5 (28/8) more memory than long
+ * the time overhead was comparable to int overhead, about 12 times 
+ * Long wrapper is comparable to creating custom class with long primitive field (quite obvious from the definition)
 
 - measuring empty class vs empty object
 	not significant difference
@@ -25,26 +25,26 @@ From the quick benchmark I found out:
 
 
 ##console output##
->
-> --- more precise using object explorer library
-> Measuring integers
->  primitive Type: Average: 3906.27 KB of memory, took 0.00 seconds (memory size per unit: 4)
->  wrapper Type: Average: 19531.27 KB of memory, took 0.05 seconds (memory size per unit: 20)
->  memory wrapper overhead: 4
->  consumed time wrapper overhead: 12
-> Measuring long numbers
->  primitive Type: Average: 7812.52 KB of memory, took 0.01 seconds (memory size per unit: 8)
->  wrapper Type: Average: 27343.77 KB of memory, took 0.06 seconds (memory size per unit: 28)
->  memory wrapper overhead: 3
->  consumed time wrapper overhead: 12
-> Measuring empty class instantiating
->  Empty class: Average: 19531.27 KB of memory, took 0.04 seconds (memory size per unit: 20)
->  Empty object: Average: 19531.27 KB of memory, took 0.05 seconds (memory size per unit: 20)
->  Measuring emulated long class instantiating
->  Emulated long class: Average: 27343.77 KB of memory, took 0.07 seconds (memory size per unit: 28)
-> 
-> 
-> --- less precise
+	
+	--- more precise using object explorer library
+	Measuring integers
+		primitive Type: Average: 3906.27 KB of memory, took 0.00 seconds (memory size per unit: 4)
+		wrapper Type: Average: 19531.27 KB of memory, took 0.05 seconds (memory size per unit: 20)
+		memory wrapper overhead: 4
+		consumed time wrapper overhead: 12
+	Measuring long numbers
+		primitive Type: Average: 7812.52 KB of memory, took 0.01 seconds (memory size per unit: 8)
+		wrapper Type: Average: 27343.77 KB of memory, took 0.06 seconds (memory size per unit: 28)
+		memory wrapper overhead: 3
+		consumed time wrapper overhead: 12
+	Measuring empty class instantiating
+		Empty class: Average: 19531.27 KB of memory, took 0.04 seconds (memory size per unit: 20)
+		Empty object: Average: 19531.27 KB of memory, took 0.05 seconds (memory size per unit: 20)
+		Measuring emulated long class instantiating
+		Emulated long class: Average: 27343.77 KB of memory, took 0.07 seconds (memory size per unit: 28)
+	
+	 
+	--- less precise
 > Measuring integers
 >  primitive Type: Average: 4331.07 KB of memory, took 0.03 seconds (memory size per unit: 4)
 >  wrapper Type: Average: 25162.66 KB of memory, took 0.15 seconds (memory size per unit: 25)

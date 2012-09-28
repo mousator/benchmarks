@@ -6,8 +6,9 @@ I measured three times the creation of one million of *int*, *long*,
 From the quick benchmark I found out:
 
 - measuring integers
- * wrapper class needs 4.5 (20/4) times more memory than int
+ * wrapper class needs 4.5 (20/4) times more memory than int 
  * the time overhead is about 12 times
+ 
 
 - measuring long 
  * wrapper class took 3.5 (28/8) more memory than long

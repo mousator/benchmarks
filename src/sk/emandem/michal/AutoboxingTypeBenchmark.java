@@ -19,12 +19,14 @@ public class AutoboxingTypeBenchmark {
 		
 //		long memory = MemoryMeasurer.measureBytes(new EmptyClass());
 //		System.out.println(memory);
-		
+//		
+//		memory = MemoryMeasurer.measureBytes(new Object());
+//		System.out.println(memory);
 		
 //		int iterations = 10000000;
 		int iterations = 1000000;
 		int repetition = 3;
-		boolean preciseMemoryMethod = false;
+		boolean preciseMemoryMethod = true;
 		
 		ResourceUsage resourceUsagePrimType= new ResourceUsage(preciseMemoryMethod);
 		ResourceUsage resourceUsageWrapper= new ResourceUsage(preciseMemoryMethod);
@@ -104,7 +106,7 @@ public class AutoboxingTypeBenchmark {
 	}
 
 	private static Object measureInt(int iterations, boolean primitiveType) {
-		System.out.println("Measuring array of size " + iterations + " of integers type " + (primitiveType?"primitive":"wrapped"));
+//		System.out.println("Measuring array of size " + iterations + " of integers type " + (primitiveType?"primitive":"wrapped"));
 		int primitiveInt = 0;
 		Integer objectInt = 0;
 		if (primitiveType) {
@@ -130,7 +132,7 @@ public class AutoboxingTypeBenchmark {
 	}
 	
 	private static Object measureLong(int iterations, boolean primitiveType) {
-		System.out.println("Measuring array of size " + iterations + " of long numbers type " + (primitiveType?"primitive":"wrapped"));
+//		System.out.println("Measuring array of size " + iterations + " of long numbers type " + (primitiveType?"primitive":"wrapped"));
 		long primitiveLong = 0L;
 		Long objectLong = 0L;
 		if (primitiveType) {
@@ -156,7 +158,7 @@ public class AutoboxingTypeBenchmark {
 	}
 	
 	private static Object measureEmulatedLongClass(int iterations) {
-		System.out.println("Measuring array of size " + iterations + " of emulated long class");
+//		System.out.println("Measuring array of size " + iterations + " of emulated long class");
 		EmulatedLongClass emulatedLongClassInstance = null;
 		EmulatedLongClass[] arr = new EmulatedLongClass[iterations];
 		for (int i = 0; i < iterations; i++) {
@@ -169,7 +171,7 @@ public class AutoboxingTypeBenchmark {
 	}
 	
 	private static Object measureEmptyClass(int iterations, boolean asObject) {
-		System.out.println("Measuring array of size " + iterations + " of empty class, using plain object " + asObject);
+//		System.out.println("Measuring array of size " + iterations + " of empty class, using plain object " + asObject);
 		if(asObject){
 			Object emptyClassInstance = null;
 			Object[] arr = new Object[iterations];

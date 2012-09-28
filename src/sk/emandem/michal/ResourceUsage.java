@@ -56,7 +56,7 @@ public class ResourceUsage {
 		}
 		totalMemory+=getUsedMemory();
 		totalTime+=stopTime-startTime;
-		System.out.println("Diff memory: " + toString());
+//		System.out.println("Diff memory: " + toString());
 	}
 	
 	public void reset(){

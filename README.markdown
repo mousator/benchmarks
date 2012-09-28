@@ -10,14 +10,14 @@ From the quick benchmark I found out:
 	the time overhead is about 12 times
 
 - measuring long 
-	wrapper class took 3.5 (28/8) more memory than long
-	the time overhead was comparable to int overhead, about 12 times 
-	Long wrapper is comparable to creating custom class with long primitive field (quite obvious from the definition)
+ 1. wrapper class took 3.5 (28/8) more memory than long
+ 2. the time overhead was comparable to int overhead, about 12 times 
+ 3. Long wrapper is comparable to creating custom class with long primitive field (quite obvious from the definition)
 
 - measuring empty class vs empty object
 	not significant difference
 
--- measuring methods
+- measuring methods
 	using Runtime class to get used memory is not precise enough
 	to get precise output I used object explorer library (http://code.google.com/p/memory-measurer/)
 	I used MacBookAir 1.7Ghz CPU, JDK1.6.0_31 64bit by [Michal Antolik]
